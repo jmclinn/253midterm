@@ -52,3 +52,6 @@ case BINARY_ADD:
 ...
 
 ```
+
+The path we're going to follow is shown above. (The initial if statement requires integers, so is skipped). Move into typeobject.c to find PyString_CheckExact(). This returns true if both values are strings, and the values, the frame pointer, and the following bytecode instruction are sent to string_concatenate() back inside ceval.c.
+
