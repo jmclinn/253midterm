@@ -39,24 +39,16 @@ After the variables x and y are loaded onto the stack we move into BINARY_ADD in
 
 ```c
 case BINARY_ADD:
-            w = POP();
-            v = TOP();
-            if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
-                //... skipped, because v and w are not integers
-            }
+
+...
+
             else if (PyString_CheckExact(v) &&
                      PyString_CheckExact(w)) {
                 x = string_concatenate(v, w, f, next_instr);
                 /* string_concatenate consumed the ref to v */
                 goto skip_decref_vx;
             }
-            else {
-              //... never reach this point, so no need to slow_add
-            }
-            Py_DECREF(v);
-          skip_decref_vx:
-            Py_DECREF(w);
-            SET_TOP(x);
-            if (x != NULL) continue;
-            break;
+
+...
+
 ```
