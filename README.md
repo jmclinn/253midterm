@@ -13,5 +13,5 @@ print z
 ```
 
 ```
-python -m dis midterm/add.py
+python -m dis add.py
 ```
