@@ -3,9 +3,9 @@
 
 CSC253 Midterm Blog Post (string concatenation) | Jonathan &amp; Yennifer
 
-` ` `python
+```python
 x = 'Hello'
 y = ' World'
 z = x + y
 print z
-` ` `
+```
