@@ -55,8 +55,7 @@ case BINARY_ADD:
 
 The path we're going to follow is shown above. (The initial if statement requires integers, so is skipped). Move into typeobject.c to find PyString_CheckExact(). This returns true if both values are strings, and the values, the frame object, and the following bytecode instruction are sent to string_concatenate() back inside ceval.c.
 
-Once there, the combined lengths of the strings are tested for overflow. Then the reference count to the first value is checked along with the next instruction to reduce uneeded references. In our case, STORE_NAME comes next, so the local variable dictionary is checked for the variable, and if it's included is then cleared. The variable is unecessary because it is currecntly in temporary storage, and the initial value will be eventually replaced by the concatenated string.
-
+Once there, the combined lengths of the strings are tested for overflow. Then the reference count to the first value is checked along with the next instruction to reduce uneeded references. In our case, STORE_NAME comes next, so the local variable dictionary is checked for the variable, and if it's included is then cleared. The variable is unecessary because it is currently in temporary storage, and the initial value will be eventually replaced by the concatenated string.
 
 
 ~~Next, our two values are sent to PyString_Concat(), which can be found in stringobject.c.
@@ -65,4 +64,22 @@ They are then passed to string_concat(), in string_object.c, while a new object 
 ~~In string_concat() a new string object is created, and then is passed through a unicode and bytearray checker. Other error checks are completed to see if the two values can be concatenated.~~
 
 ~~If no errors are found, the two string sizes are combined and all the size values are checked to be sure no overflow or memory issues arise. In our situation, the following fucntion is performed, allocating memory to the new string object being created.~~
+
+Once the second reference is removed we move into the next if statement.
+
+```c
+
+if (v->ob_refcnt == 1 && !PyString_CHECK_INTERNED(v)) {
+
+```
+
+The reference count has been reduced to one, and our string is larger than the maximum  1 or 2 bytes required for it to be saved in the interned dictionary reserved for those small strings.
+
+Next, the actual concatenation happens using the C function memcpy, shown below
+
+```c
+        memcpy(PyString_AS_STRING(v) + v_len,
+               PyString_AS_STRING(w), w_len);
+        return v;
+```
 
