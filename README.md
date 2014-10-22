@@ -58,3 +58,6 @@ The path we're going to follow is shown above. (The initial if statement require
 Once there, the combined lengths of the strings are tested for overflow. Then the reference count to the first value is checked along with the next instruction to reduce uneeded references. In our case, STORE_NAME comes next, so the local variable dictionary is checked for the variable, and if it's included is then cleared. The variable is unecessary because it is currecntly in temporary storage, and the initial value will be eventually replaced by the concatenated string.
 
 Next, our two values are sent to PyString_Concat(), which can be found in stringobject.c.
+They are then passed to string_concat(), in string_object.c, while a new object which will host the concatenated string is created.
+
+In string_concat() 
