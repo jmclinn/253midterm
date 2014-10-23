@@ -1,6 +1,6 @@
 CSC253 Midterm Blog Post
 ==========
-##### string concatenation
+#### String Concatenation (+)
 ###### Jonathan &amp; Yennifer
 
 
@@ -44,6 +44,9 @@ And here is the bytecode that is produced from those lines
 ```
 
 The concatenation happens on line 4, so let's start there.
+
+Walkthrough
+===========
 
 After the variables x and y are loaded onto the stack we move into BINARY_ADD in ceval.c
 
@@ -96,3 +99,20 @@ Next, the actual concatenation happens using the C function memcpy, shown below
 The memcpy function takes the first value as the destination. So we use our first string as the initial location, adding in an offset of its length, which is where the second string will be appended. The second value is the value to be appended, and finally it's length is included. There is no returned value out of memcpy, because the new combined string has been placed where the first string value was previously located.
 
 That value is then returned back to BINARY_ADD, where it is pushed on to the stack where it can be accessed.
+
+Observations
+============
+
+During the walkthrough you may have noticed there were multiple, and sometimes seemingly redundant, checks about what was being passed, saved, or manipulated. That the values were indeed strings, that there is enough memory available, and that the space where the result would be saved was available to write to were all part of this. As an ever changing, open-source language, assuming values being passed from function to function have all the necessary parameters is an error waiting to happen, and stresses the importance of error checking when developing any program or working to potentially add to/edit the Python interpreter.
+
+Py_MEMCPY vs memcpy: For most strings being concatenated memcpy is used. This takes each value and copies one to the end of the other. It has a higher setup cost however, so for cases where the two values are very small (less than 16 bytes) there is an alternate method called Py_MEMCPY that is used. This method simply adds the second value character by character to the end of the first value.
+
+```c
+  for (i_ = 0; i < n_; i_++)
+    t_[i_] = s_[i_];
+```
+
+This inline concatenation is much more efficient for smaller strings, but that efficiency is lost when anything more than a few bytes needs to be joined.
+
+Conclusions
+===========
