@@ -70,14 +70,6 @@ The path we're going to follow is shown above. (The initial if statement require
 
 Once there, the combined lengths of the strings are tested for overflow. Then the reference count to the first value is checked along with the next instruction to reduce uneeded references. In our case, STORE_NAME comes next, so the local variable dictionary is checked for the variable, and if it's included is then cleared. The variable is unecessary because it is currently in temporary storage, and the initial value will be eventually replaced by the concatenated string.
 
-
-~~Next, our two values are sent to PyString_Concat(), which can be found in stringobject.c.
-They are then passed to string_concat(), in string_object.c, while a new object which will host the concatenated string is created.~~
-
-~~In string_concat() a new string object is created, and then is passed through a unicode and bytearray checker. Other error checks are completed to see if the two values can be concatenated.~~
-
-~~If no errors are found, the two string sizes are combined and all the size values are checked to be sure no overflow or memory issues arise. In our situation, the following fucntion is performed, allocating memory to the new string object being created.~~
-
 Once the second reference is removed we move into the next if statement.
 
 ```c
@@ -103,9 +95,9 @@ That value is then returned back to BINARY_ADD, where it is pushed on to the sta
 Observations
 ============
 
-During the walkthrough you may have noticed there were multiple, and sometimes seemingly redundant, checks about what was being passed, saved, or manipulated. That the values were indeed strings, that there is enough memory available, and that the space where the result would be saved was available to write to were all part of this. As an ever changing, open-source language, assuming values being passed from function to function have all the necessary parameters is an error waiting to happen, and stresses the importance of error checking when developing any program or working to potentially add to/edit the Python interpreter.
+1. During the walkthrough you may have noticed there were multiple, and sometimes seemingly redundant, checks about what was being passed, saved, or manipulated. That the values were indeed strings, that there is enough memory available, and that the space where the result would be saved was available to write to were all part of this. As an ever changing, open-source language, assuming values being passed from function to function have all the necessary parameters is an error waiting to happen, and stresses the importance of error checking when developing any program or working to potentially add to/edit the Python interpreter.
 
-Py_MEMCPY vs memcpy: For most strings being concatenated memcpy is used. This takes each value and copies one to the end of the other. It has a higher setup cost however, so for cases where the two values are very small (less than 16 bytes) there is an alternate method called Py_MEMCPY that is used. This method simply adds the second value character by character to the end of the first value.
+2. Py_MEMCPY vs memcpy: For most strings being concatenated memcpy is used. This takes each value and copies one to the end of the other. It has a higher setup cost however, so for cases where the two values are very small (less than 16 bytes) there is an alternate method called Py_MEMCPY that is used. This method simply adds the second value character by character to the end of the first value.
 
 ```c
   for (i_ = 0; i < n_; i_++)
