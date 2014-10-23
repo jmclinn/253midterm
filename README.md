@@ -139,4 +139,4 @@ b = ''.join((x,y,z))
 
 As you can see, the more strings concatenated, the more times BINARY_ADD needs to be called. The .join() function on the other hand optimizes by building a tuple to handle the multiple concatenations at the same time.
 
-We hope this walkthrough and explanation of string concatenation is helful.
+We hope this walkthrough and explanation of string concatenation is helful!
