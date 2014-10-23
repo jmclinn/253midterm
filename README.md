@@ -108,3 +108,35 @@ This inline concatenation is much more efficient for smaller strings, but that e
 
 Conclusions
 ===========
+
+The (+) operator takes two strings, creates a new space to join them together, and places them both one at a time. This method is perfectly fine when attempting to join two strings. When multiple strings are involved however, there are more efficient methods, like the .join() function. A sample piece of Python code and it's disassembled bytecode are shown below.
+
+```python
+x = 'Hello'
+y = ' World'
+z = '. Goodmorning!'
+a = x + y + z
+b = ''.join((x,y,z))
+```
+
+```
+  4          18 LOAD_NAME                0 (x)
+             21 LOAD_NAME                1 (y)
+             24 BINARY_ADD          
+             25 LOAD_NAME                2 (z)
+             28 BINARY_ADD          
+             29 STORE_NAME               3 (a)
+
+  5          32 LOAD_CONST               3 ('')
+             35 LOAD_ATTR                4 (join)
+             38 LOAD_NAME                0 (x)
+             41 LOAD_NAME                1 (y)
+             44 LOAD_NAME                2 (z)
+             47 BUILD_TUPLE              3
+             50 CALL_FUNCTION            1
+             53 STORE_NAME               5 (b)
+```
+
+As you can see, the more strings concatenated, the more times BINARY_ADD needs to be called. The .join() function on the other hand optimizes by building a tuple to handle the multiple concatenations at the same time.
+
+We hope this walkthrough and explanation of string concatenation is helful.
