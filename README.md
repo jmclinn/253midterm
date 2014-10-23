@@ -18,7 +18,7 @@ The output of that code is
 Hello World
 ```
 
-and here is the bytecode that is produced from those lines
+And here is the bytecode that is produced from those lines
 
 ```
   1           0 LOAD_CONST               0 ('Hello')
