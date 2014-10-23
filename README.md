@@ -1,7 +1,11 @@
-253midterm
+CSC253 Midterm Blog Post
 ==========
+##### string concatenation
+###### Jonathan &amp; Yennifer
 
-CSC253 Midterm Blog Post (string concatenation) | Jonathan &amp; Yennifer
+
+Introduction and Bytecode
+=========================
 
 In this post we're going to discuss how string concatenation using the '+' operator in Python is accomplished inside the interpreter. First, let's create a few lines of Python that use string concatenation 
 
