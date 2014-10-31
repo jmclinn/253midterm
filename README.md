@@ -83,9 +83,15 @@ The reference count has been reduced to one, and our string is larger than the m
 Next, the actual concatenation happens using the C function memcpy, shown below
 
 ```c
+if (v->ob_refcnt == 1 && !PyString_CHECK_INTERNED(v)) {
+
+  ...
+
         memcpy(PyString_AS_STRING(v) + v_len,
                PyString_AS_STRING(w), w_len);
         return v;
+        
+  ...
 ```
 
 The memcpy function takes the first value as the destination. We use our first string as the initial location, adding in an offset of its length, which is where the second string will be appended. The second value is the value to be appended, and finally it's length is included. There is no returned value from memcpy because the new combined string has been placed where the first string value was previously located.
