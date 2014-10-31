@@ -97,7 +97,7 @@ Observations
 
 1. During the walkthrough you may have noticed there were multiple, and sometimes seemingly redundant, checks about what was being passed, saved, or manipulated. This includes the values being strings, the memory availability, and whether we have the ability to write to the result location. As an ever changing, open-source language, assuming the values being passed from function to function have all the necessary parameters, is an error waiting to happen. This stresses the importance of error checking when developing any program or working to potentially add to or edit the Python interpreter.
 
-2. Py_MEMCPY vs memcpy: For most strings being concatenated memcpy is used. This takes each value and copies one to the end of the other. It has a higher setup cost however, so for cases where the two values are very small (less than 16 bytes) there is an alternate method called Py_MEMCPY that is used. This method simply adds the second value character by character to the end of the first value.
+2. Py_MEMCPY vs memcpy: For most strings being concatenated memcpy is used. This takes each value and copies one to the end of the other. It has a higher setup cost however, so for cases where the two values are very small (less than 16 bytes) there is an alternate method called Py_MEMCPY that is used. This method simply adds the second value character by character to the end of the first value. Py_MEMCPY is a macro so it inlines the code, making an additional function call unecessary.
 
 ```c
   for (i_ = 0; i < n_; i_++)
